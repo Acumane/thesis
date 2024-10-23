@@ -12,8 +12,8 @@ def doomsday(trials, getEnd):
         now = random.uniform(beg, end+1)  # [1, end]
         past = now - beg  # future estimate
         future = end - now
-        error = past - future  # Gott: past ~= future
-        errors.append(error)
+        errors.append(future - past) 
+        # Expect equidistance to past & future
     return errors
 
 def possibles(w1, w2, res):
@@ -37,9 +37,9 @@ def animate(frame):
     ax.clear()
     ax.set_xlim(-w2, w2)
     ax.set_ylim(0, 0.05)
-    ax.set_xlabel("Error (estimated - actual)")
+    ax.set_xlabel("Error (actual - estimated)")
     ax.set_ylabel("Density")
-    ax.yaxis.grid(True, linestyle='--', color='lightgray')
+    ax.yaxis.grid(True, linestyle="--", color="lightgray")
     
     getEnd, subtitle = steps[frame]
     errors = doomsday(trials, getEnd)
@@ -50,9 +50,9 @@ def animate(frame):
     ax.fill_between(bins, density, color="lightblue", alpha=0.5)
 
     area = trapz(density, bins) # integrate
-    ax.legend([f'Area: {area:.2f}'], loc='upper right')
+    ax.legend([f"Area: {area:.2f}"], loc="upper right")
     ax.set_title(subtitle)
     return ax
 
 anim = Anim(fig, animate, frames=len(steps), interval=1000, repeat=True)
-anim.save("doomsday.gif", writer="pillow", fps=1)
+anim.save(".embed/doomsday-1.gif", writer="pillow", fps=1)

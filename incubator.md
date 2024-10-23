@@ -14,6 +14,6 @@ For this reason, we need only evaluate strategies at 1 and 0—or really just on
 
 To demonstrate this visually, we'll instead do this exhaustively ($E$ has previously stood in for $T$):
 
-![](results.png)
+![](.embed/incubator.png)
 
 $P(T)$ and thereby $Cr(T)$ are found to be $\frac{1}{3}$ in stage $A$ and $\frac{1}{2}$ in $B$. SSA + SIA agrees...

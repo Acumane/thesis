@@ -57,7 +57,7 @@ plot.title(f"n={n} trials / strategy")
 
 plot.legend()
 plot.grid(True)
-plot.savefig("results.png")
+plot.savefig(".embed/incubator.png")
 
 print("\nOptimal Cr(T):")
 # If we *always* bet tails, how often do we win?
@@ -66,4 +66,4 @@ frac = lambda n : Fraction(n/100).limit_denominator(10)
 
 print(f"  A) {c_A:.1f}% ≈ {frac(c_A)}")
 print(f"  B) {c_B:.1f}% ≈ {frac(c_B)}")
-print("\nFigure saved to \"results.png\"")
+print("\nFigure saved to \"incubator.png\"")
