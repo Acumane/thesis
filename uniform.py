@@ -23,7 +23,7 @@ plot.axvline(x=5, color="g", linestyle="--", alpha=0.3, label="Mean")
 
 plot.title("Optimal Guess Strategy over Uniform Distribution [0, 10]. 1,000 Trials ea.")
 plot.xlabel("$S_n$ (n always guessed)")
-plot.ylabel("Avg. abs. Error (ε)")
+plot.ylabel("Expected abs. Error (ε)")
 plot.grid(True, alpha=0.3)
 plot.legend()
 
@@ -32,6 +32,7 @@ plot.annotate(f"ε ≈ {optimal_err:.1f}",
             xytext=(5, optimal_err+0.5),
             color="red",
             fontsize=14,
+            ha="center",
             arrowprops=dict(facecolor="red", edgecolor="none", shrink=0.2))
 
 plot.xlim(0, 10)
