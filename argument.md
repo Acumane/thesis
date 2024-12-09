@@ -13,8 +13,7 @@ Or, visually:
 
 <center>
 
-<img src="./.embed/gott-1.png" width="500px">
-
+![](.embed/gott-1.png)
 Possible world $w_1$
 
 </center>
@@ -23,8 +22,8 @@ On closer inspection, Gott hasn't really discovered anything. Except for the tri
 For example, we are just as confident that our $t_{now}$ won't belong to the middle 5%:
 
 <center>
-<img src="./.embed/gott-2.png" width="500px">
 
+![](.embed/gott-2.png)
 Possible world $w_2$
 
 </center>
@@ -55,7 +54,7 @@ So for $w_1$'s confidence interval, $\frac{1}{39}t_{past} < t_{future} < 39t_{pa
 ---
 
 Using Gott's logic, Bostrom suggests we assume:
- $t_{future} = (t_{end} - t_{now}) \approx t_{past} = (t_{now} - t_{begin})$
+$t_{future} = (t_{end} - t_{now}) \approx t_{past} = (t_{now} - t_{begin})$
 
 Or in other words, we *pretend* that the series will continue for roughly as long as it's already lasted. Ignoring any boring wins caught by whatever tolerance we assign to the word "roughly" ($\pm$ 0.01%, 2.5%, etc.), we're almost always wrong and overshoot as often as we undershoot—50/50 odds. It's reasonable to question why being symmetrically wrong would be preferable to any other strategy. Bostrom doesn't appear to offer any stronger reasoning than an appeal to neutrality, and our concerns with Gott's original argument certainly give us no reason to prefer $w_2$.
 
@@ -63,7 +62,8 @@ Or in other words, we *pretend* that the series will continue for roughly as lon
 ## My argument
 
 If we instead measure how wrong we are, it becomes very clear that picking the mean is the dominant strategy. If you always pick 5, you'll never be more than 5 off. Whereas fringe strategies like 0 and 10 will be 10 off half as often, but 9 off almost as often, 8 not far behind, etc. Let's run a simulation for strategies $S_0$ to $S_{10}$ and see if this checks out:
-<center><img src="./.embed/uniform.png" width="500px"></center>
+
+![](.embed/uniform.png)
 
 Looks correct. Estimated error appears to be quadratic. $\varepsilon$ converges on half its strategy's distance from either end, and worst-case $\varepsilon$ is always half of world size. Worth keeping in mind for the math ahead.
 
@@ -82,7 +82,7 @@ Notice our toy example was given a discrete, unambiguous beginning and end [0,10
 ### Assumptions
 According to our own rationale, we must reason as if we are a random sample from the interval. A fine statement on its own, but I'm straining credulity if I ask you to reason before you've observed you can reason. No person reading has yet to make an observation. So we must determine how one, from behind a Rawlsian veil of ignorance—a magical place where one can reason without belonging to the human reference class—would bet. So long as you believe there is some world to speak of, you must entertain the idea that you could be "Adam" (i.e. before observing, your world was size 0). Obviously, no negative population can exist, so our lower bound must be 0 even if it's difficult to imagine not observing from within a population. Fixing this term doesn't change much mathematically, so both $W_1$ and $W_2$  will remain free until later.
 
-Lastly, we will assume our true world size $W$ is uniformly distributed between $W_1$ and $W_2$; that is, we believe all possible worlds belonging to this interval are equally possible, which is the best a Bayesian can do without any evidence to the contrary. Although we might consider some worlds more likely than others, we think so given auxiliary evidence and update our prior accordingly. For example, worlds where $W_2$ is only slightly larger than our population now are downregulated by our confidence that the world won't end tomorrow. We also can't consider infinite worlds, since it's not possible to uniformly select from $[0,\infty$). This is because the infinitely many numbers from this distribution must have probabilities $P$ that sum to 1, so $P$ for each must equal 0 (not useful). With knowledge about the universe (expansion of space or some cosmic filter), we might conclude that humanity is finite anyway, at least because our accessible universe is finite and head death defeats infinite time. 
+Lastly, we will assume our true world size $W$ is uniformly distributed between $W_1$ and $W_2$; that is, we believe all possible worlds belonging to this interval are equally possible, which is the best a Bayesian can do without any evidence to the contrary. Although we might consider some worlds more likely than others, we think so given auxiliary evidence and update our prior accordingly. For example, worlds where $W_2$ is only slightly larger than our population now are downregulated by our confidence that the world won't end tomorrow. We also can't consider infinite worlds, since it's not possible to uniformly select from $[0,\infty$). This is because the infinitely many numbers from this distribution must have probabilities $P$ that sum to 1, so $P$ for each must equal 0 (not useful). With knowledge about the universe, we might conclude that humanity is finite anyway, at least because our accessible universe is finite and head death defeats infinite time. 
 
 With these conditions in mind, the overall expected error $E(G)$ should be:
 
@@ -90,7 +90,7 @@ $$
 E(G) = \frac{1}{W_2 - W_1} \left( \int_{W_1}^{W_2} E_W(G) \, dW \right)
 $$
 
-But this integral is discontinuous! As seen in our toy example, our expected error follows a different function when our $G>W$. Sure, we'll still never bet above our upper bound $W_2$, but all $G$s above $W_1$ risk this too.
+But this integral is discontinuous! As seen in our toy example, our expected error follows a different function when our $G>W$. Sure, we'll still never bet above our upper bound $W_2$, but all $G$s $> W_1$ risk being larger than their world.
 
 
 So we evaluate them separately:⠀$E(G) = \dfrac{I_1 + I_2}{W_2 - W_1}$,⠀where...
@@ -125,9 +125,7 @@ $$
 
 The $G$ inside the logarithm makes this impossible to solve algebraically, but we can converge on the solution with an algorithm. Since this convergent value is the system's minimum, future recountings of this equality will use $G^\star$ instead of $G$. The following simulation implements this algorithm and also tries every strategy $S_0$ to $S_{100}$ on an increasing number of possible worlds between $W_1$ = 0 and $W_2$ = 100:
 
-<center>
-<img src="./.embed/doomsday-0.gif" width="900px">
-</center>
+![](.embed/doomsday-0.png)
 
 The simulated optimal strategy approaches our theoretical value. Good news! Interestingly, if we update the simulation with a different $W_2$, $G^\star$ will always be some ~18% of that value. We will attempt to show this formally. Recall that it's neither pragmatic nor feasible to entertain an infinite world size $W_2$. but we can investigate how $G^\star$ changes for any number, even large ones.
 
@@ -171,4 +169,6 @@ $$
 G^\star = x W_2 \approx 0.1867 W_2
 $$
 
-No matter how large $W_2$ becomes, guessing $18.67\%$ of $W_2$ is *always* the optimal strategy.
+No matter how large $W_2$ becomes, guessing $18.67\%$ of $W_2$ is *always* the optimal strategy. This is because the frequency of small observations, which are possible in all worlds, offset the large but rare errors you make incur from guessing small in large worlds.
+With respect to the original rule, $t_{future} \approx t_{past}$, we should now act as though the series will continue for roughly $4.356$ times as long as it's already lasted, or $t_{future} \approx 4.356\cdot t_{past}$.
+

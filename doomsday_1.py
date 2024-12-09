@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from numpy.polynomial import polynomial as P
 from scipy.optimize import minimize_scalar
 
@@ -79,21 +78,23 @@ def minimizeE(W1, W2):
 
 # Define scenarios with increasing resolution
 scenarios = [
-    ("2 worlds (dW = 100)", np.linspace(W1, W2, 2).astype(int)),
-    ("4 worlds (dW ≈ 33)", np.linspace(W1, W2, 4).astype(int)),
-    ("8 worlds (dW ≈ 14.3)", np.linspace(W1, W2, 8).astype(int)),
-    ("16 worlds (dW ≈ 6.6)", np.linspace(W1, W2, 16).astype(int)),
-    ("Continuous (dW = 1)", np.linspace(W1, W2, 101).astype(int))
+    ("2 worlds\n(dW = 100)", np.linspace(W1, W2, 2).astype(int)),
+    ("4 worlds\n(dW ≈ 33)", np.linspace(W1, W2, 4).astype(int)),
+    ("8 worlds\n(dW ≈ 14.3)", np.linspace(W1, W2, 8).astype(int)),
+    ("Continuous\n(dW = 1)", np.linspace(W1, W2, 101).astype(int))
 ]
 
-# Set up the figure
-fig, ax = plt.subplots(figsize=(12, 6))
-plt.suptitle("World Size Guess Strategies as lim(dW→0)", fontsize=14)
+# Create figure with more space for labels
+fig = plt.figure(figsize=(20, 11))
+gs = fig.add_gridspec(2, 2, hspace=0.2, wspace=0.15)
+axs = gs.subplots()
+axs = axs.ravel()
 
-def animate(frame):
-    ax.clear()
-    title, worlds = scenarios[frame]
+plt.suptitle("World Size Guess Strategies as lim(dW→0)", y=0.95, fontsize=18)
 
+for idx, (title, worlds) in enumerate(scenarios):
+    ax = axs[idx]
+    
     # Run simulation:
     guesses, errors, best_fit, min_G, min_err = simulate(worlds)
 
@@ -122,15 +123,18 @@ def animate(frame):
 
     ax.set_xticks(worlds) # Ticks represent possible worlds
     ax.set_xticklabels(["0" if x == W1 else "100" if x == W2 else "" for x in worlds])
-
-    ax.set_title(title)
-    ax.set_xlabel("Strategy ($G$)")
-    ax.set_ylabel("Expected abs. error (ε)")
+    ax.text(0.05, 0.95, title, transform=ax.transAxes, 
+            fontsize=14,
+            bbox=dict(facecolor='white', edgecolor='none', alpha=0.8),
+            verticalalignment='top')
+    
     ax.grid(True, alpha=0.3)
-    ax.legend()
 
-# Create animation
-anim = FuncAnimation(fig, animate, frames=len(scenarios), interval=2000, repeat=True)
+# Add legend inside the last subplot
+axs[-1].legend(loc='lower right')
 
-anim.save(".embed/doomsday-0.gif", writer="pillow", fps=0.5)
+fig.supxlabel("Strategy (G)", y=0.04, fontsize=16)
+fig.supylabel("Expected abs. error (ε)", x=0.08, fontsize=16)
+
+plt.savefig('doomsday-grid.png', dpi=300, bbox_inches='tight')
 plt.close()
