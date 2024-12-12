@@ -1,4 +1,3 @@
-
 ## Gott's Argument
 
 Gott's "$\Delta t$ argument" is simply:
@@ -6,7 +5,6 @@ Gott's "$\Delta t$ argument" is simply:
 2. Barring anything special about $t_{now}$
 
 Then "we expect $t_{now}$ to be located randomly in this interval." This is basically just the principle of mediocrity.
-
 
 Since $t_{begin}$ and $t_{end}$ could be anything, we'll use $r = (t_{now} - t_{begin})/(t_{end} - t_{begin})$ to normalize our observation of $t_{now}$ to a value between 0 and 1. For such a value, Gott says "...there is a probability $P = 0.95$ that $0.025 < r < 0.975$".
 Or, visually:
@@ -18,7 +16,7 @@ Possible world $w_1$
 
 </center>
 
-On closer inspection, Gott hasn't really discovered anything. Except for the trivial case that we are 100% sure $t_{now}$ belongs to this interval (which is guaranteed by premise 1), every other confidence interval $P < 1$ can be expressed an infinite amount of ways.
+On closer inspection, this isn't saying much of anything. Except for the trivial case that we are 100% sure $t_{now}$ belongs to this interval (which is guaranteed by premise 1), every other confidence interval $P < 1$ can be expressed an infinite amount of ways.
 For example, we are just as confident that our $t_{now}$ won't belong to the middle 5%:
 
 <center>
@@ -63,7 +61,12 @@ Or in other words, we *pretend* that the series will continue for roughly as lon
 
 If we instead measure how wrong we are, it becomes very clear that picking the mean is the dominant strategy. If you always pick 5, you'll never be more than 5 off. Whereas fringe strategies like 0 and 10 will be 10 off half as often, but 9 off almost as often, 8 not far behind, etc. Let's run a simulation for strategies $S_0$ to $S_{10}$ and see if this checks out:
 
+<center>
+
 ![](.embed/uniform.png)
+Figure 1
+
+</center>
 
 Looks correct. Estimated error appears to be quadratic. $\varepsilon$ converges on half its strategy's distance from either end, and worst-case $\varepsilon$ is always half of world size. Worth keeping in mind for the math ahead.
 
@@ -125,7 +128,12 @@ $$
 
 The $G$ inside the logarithm makes this impossible to solve algebraically, but we can converge on the solution with an algorithm. Since this convergent value is the system's minimum, future recountings of this equality will use $G^\star$ instead of $G$. The following simulation implements this algorithm and also tries every strategy $S_0$ to $S_{100}$ on an increasing number of possible worlds between $W_1$ = 0 and $W_2$ = 100:
 
+<center>
+
 ![](.embed/doomsday-0.png)
+Figure 2
+
+</center>
 
 The simulated optimal strategy approaches our theoretical value. Good news! Interestingly, if we update the simulation with a different $W_2$, $G^\star$ will always be some ~18% of that value. We will attempt to show this formally. Recall that it's neither pragmatic nor feasible to entertain an infinite world size $W_2$. but we can investigate how $G^\star$ changes for any number, even large ones.
 
@@ -172,3 +180,23 @@ $$
 No matter how large $W_2$ becomes, guessing $18.67\%$ of $W_2$ is *always* the optimal strategy. This is because the frequency of small observations, which are possible in all worlds, offset the large but rare errors you make incur from guessing small in large worlds.
 With respect to the original rule, $t_{future} \approx t_{past}$, we should now act as though the series will continue for roughly $4.356$ times as long as it's already lasted, or $t_{future} \approx 4.356\cdot t_{past}$.
 
+
+## Criticism & context
+
+A possible criticism of my approach is that it seems to give possible worlds too much say in our estimate for the actual world. We dismissed SIA for a similar reason, so have we done something wrong?
+
+
+While the model appears to be biased towards smaller worlds, unlike SIA, it doesn't claim any world to be more likely than another. That is, there is no attack from the Presumptuous Philosopher. If we're still concerned, we can reformulate our method to allow for possible worlds to "double dip"—that is, an observation of 7 could belong to a world with $W_2 = 10$ and $W_2 = 100$. It is already clear this is inconsistent with the original Urn thought experiment: if I were to draw a 7 ball, I'm unsure whether it belonged to $W_{10}$ or $W_{100}$, but I *am* certain it belong to only one of them. That is, both urns have their own 7. It's also important that each possible world not share its interval with any other once our beliefs about them become non-uniform. If we believe $W_{100}$ to be much more likely than $W_{10}$, suddenly a 7 from $W_{100}$ $\neq$ the one from $W_{10}$.
+
+Though we may be assured our model fits the Doomsday argument better than $t_{future} \approx t_{past}$, where came our confidence that Doomsday argument best fits our world? If, as with the urns, doom-early and doom-late *must* both be thought of as materially existent worlds from which you could observe, it disagrees with our perception of reality.
+Conventionally, there exists one "real" world with definite but presently unknown properties. Revisiting Figure 1, it might appear at first to model this kind of reality. But it requires $W$ be known; we call it $W$ so as not to lose generality. Although we may place an upper bound on $W_2$, its value is truly unknown—my model captures this. It is simply the case that reasoning about our uncertainty in $W_2$ *looks* like a belief in materially real possible worlds. More should be said on this.
+
+#### (In)significance of results?
+
+Under the UN's population growth model, traditional anthropic reasoning gives us 100 years to our ~400. Postponing the apocalypse 3 times over calls for celebration, but this change is not as substantial as techno-optimists might hope. Bostrom estimates that humanity might eventually reach $10^{18}$ to $10^{20}$ stars, which could sustain a total $10^{35}$ biological human beings and vastly more digital ones. Indeed, for the optimist to be satisfied, we would need to be among the first 0.0000000000000000000001% of humans to live in this world!
+
+Say we made it to 2500, believing doom was nigh according to our prophecy from the 21st century. As civilization waits with bated breath for the apocalypse, philosophers reconsult this literature and rejoice, for we actually have another 400 years to go. From this time onward, every year, this model will predict a doomsday in the near future that never draws nearer. This is perhaps the most important caveat; anthropic reasoning is the kind of reasoning we employ with no/little evidence. It is a prior, and nothing more.
+
+If we merely last as long as the typical mammalian species, we still have over 200,000 years to go (Barnosky et al. 2011). Then again, no other earthly species—mammalian or otherwise—has simultaneously explored the power of nuclear fusion for great good and existential harm. Toby Ord accounts for both known and unknowable risk in his odds of “existential catastrophe” in the next century, which he places at 16%: one in six.
+
+Further, though the UN has its estimates for population growth, they do not (and cannot) account for technological black swan events like life extension, whole brain emulation, or AGI. "Humanity" might drag on due to an immortal few who rarely or never reproduce. Exotic observers like augmented humans, digitized minds, or artificial superintelligence may not even belong to the "human" reference class, and thus our evolution into higher forms may be read as our end.
