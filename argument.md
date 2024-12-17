@@ -57,9 +57,11 @@ $t_{future} = (t_{end} - t_{now}) \approx t_{past} = (t_{now} - t_{begin})$
 Or in other words, we *pretend* that the series will continue for roughly as long as it's already lasted. Ignoring any boring wins caught by whatever tolerance we assign to the word "roughly" ($\pm$ 0.01%, 2.5%, etc.), we're almost always wrong and overshoot as often as we undershoot—50/50 odds. It's reasonable to question why being symmetrically wrong would be preferable to any other strategy. Bostrom doesn't appear to offer any stronger reasoning than an appeal to neutrality, and our concerns with Gott's original argument certainly give us no reason to prefer $w_2$.
 
 
-## My argument
+## An alternative
 
-If we instead measure how wrong we are, it becomes very clear that picking the mean is the dominant strategy. If you always pick 5, you'll never be more than 5 off. Whereas fringe strategies like 0 and 10 will be 10 off half as often, but 9 off almost as often, 8 not far behind, etc. Let's run a simulation for strategies $S_0$ to $S_{10}$ and see if this checks out:
+Let's say I've just picked a number between 0 and 10, inclusive, and I'm asking you to guess what number it is. I don't expect you'll get it right—you're not a mind reader, after all—but I might be impressed if you're off by one. In pursuit of my admiration, you reason that minimizing the amount you might be wrong by is the optimal strategy. If you always bet 5, you'll never be more than 5 off (e.g. if I picked 0 or 10). Whereas if you were to guess 0 or 10, you'll be off by 10 only half as often, but *also* 9 off almost as often, 8 not far behind, and so on. You therefore resolve to always guess that I've picked 5, as it appears to be the optimal strategy.
+
+We've run a simulation for strategies $S_0$ to $S_{10}$. Let's see if this checks out:
 
 <center>
 
@@ -68,9 +70,12 @@ Figure 1
 
 </center>
 
-Looks correct. Estimated error appears to be quadratic. $\varepsilon$ converges on half its strategy's distance from either end, and worst-case $\varepsilon$ is always half of world size. Worth keeping in mind for the math ahead.
+Your bet on $S_5$ pays off. Your average error of 2.5 doesn't leave me too impressed, but you could be much worse off. This is the game of error minimization. Before we can tackle the greater stakes of armageddon, we'll need to make a general and formal case for this kind of strategy. The curve you've doubtless spotted in the toy example appears to be a parabola. We'll soon devise a function to model this curve and others, which we'll call **error functions**, and we'll start with the toy example:
 
-Let's attempt to mathematize—experiment and intuition gets us only so far. Imagine your observation $x$ is somewhere along a line from 0 to $W$, your guess $g$ divides this line into two segments. The expected error of these two segments are integrals over $g-x$ and $x-g$, respectively. To find this world's expected error function for guesses on this interval $E_W(g\mid 0\leq g\leq W)$, we integrate over both these segments:
+### Modeling one world
+
+Instead of choosing a number randomly, I'll be discovering my birth rank. Imagine my rank number $x$ is somewhere along an interval from 0 to $W$, where $W$ is our known world size (that is, $t_{end}$; person #$W$ is the last human to ever be—never mind that this is unknowable, this is what we take capital $W$ to mean). Your guess $g$ divides this interval into two segments; $x$ could be on either side of $g$. The total error is found by integrating $g-x$ and $x-g$ over their respective segment lengths. The resulting integral, divided by world size $W$, returns the average error for world of size $W$ given any guess $g$. This is the error function $E_W(g)$:
+
 $$
 E_W(g\mid 0\leq g\leq W) = \frac{1}{W} \left( \int_{0}^{g} (g - x)dx + \int_{g}^{W} (x - g)dx \right) = \frac{1}{W} \left( \frac{g^2}{2} + \frac{(W - g)^2}{2} \right)
 $$
@@ -79,18 +84,15 @@ $$
 E_W(g\mid 0\leq g\leq W) = \frac{g^2 - W g + \frac{1}{2} W^2}{W}
 $$
 
-The numerator is our parabola observed in the simulation above. You can think of the denominator as normalizing over world size, giving us the average expected error per unit length. We *could* guess some $g > W$, which would be irrational on account of having set $W$ ourselves, ostensibly because we believe larger worlds could not exist. But if we did:
+This error curve has the great benefit of being easy to read. Its numerator is a classic quadratic responsible for the parabola observed previously, and its denominator gives us the average error instead of an aggregate. 
+If you were to solve for the function's minimum, you'll rediscover the optimal strategy—call this $g^\star$. Notice, too, the condition we've placed on $g$: it must belong to the interval. Although we *could* guess some $g > W$ or $g < 0$, it would be absurd on account of $W$'s definition and whatever a world smaller than zero means. The real reason for restricting $g$ is because the error function behaves differently beyond this regime:
 $$
 E_W(g\mid g > W) = g - \frac{W}{2}
 $$
 
+For guesses $> W$, the error curve becomes linear since we've lost the uncertainty of "walking" in the wrong direction; we're just subtracting the interval's mean from $g$.  Although guessing "out of bounds" is of no use to us presently, we won't always be so lucky. We have also taken for granted our knowledge of $W$, which only appears as a variable so as to not lose generality. What's more, our possible world interval should be discrete; while I could've picked 3.6 from the continuous interval [0,10], we haven't counted fractions of people since 1868. To begin predicting optimal strategies for the Doomsday argument, we must account for these complexities.
 
-It's linear because we've lost the uncertainty of "walking" in the wrong direction; we're just subtracting the mean of the distribution.
-
-Notice our toy example was given a fixed beginning and end [0,10]. This would be the equivalent of knowing our world size, which is not known to anyone but clairvoyants. It's also continuous, which is not the case for world sizes (we haven't counted fractions of people since 1868). To begin predicting optimal strategies for the Doomsday argument, we must account for this.
-
-Let's make sure our functions have an equivalent closed form for a discrete interval:
-
+We're allowed to integrate over a continuous interval because we're summing infinitesimals. Not so for a discrete one. Let us instead represent our error function as a sum and solve for its closed form:
 
 $$
 E_W(g\mid 0\leq g\leq W) =\sum_{x=0}^{W}|g - x| = \sum_{x=0}^{g}(g - x) + \sum_{x=g+1}^{W}(x - g)
@@ -102,7 +104,7 @@ It's very similar. This would simplify to our original without the $+1$ on the $
 $$
 E_W(g\mid g > W) = \frac{1}{W+1}\sum_{x=0}^{W}(g - x) = \frac{1}{W+1}\left((W+1)g - \frac{W(W+1)}{2}\right) = g - \frac{W}{2}.
 $$
-Great, it's identical. Here's our discrete version of $E_W(g)$ as a piecewise function:
+And this part is identical. Let's ditch the conditions on $g$ and write the new discrete $E_W$ as a piecewise function:
 
 $$
 E_W(g) = 
@@ -112,48 +114,61 @@ g - \frac{W}{2}, & \text{if } g > W.
 \end{cases}
 $$
 
+Born out of our toy example, $E_W$ has successfully generalized our reasoning about error to a world of known size $W$. Let's move on to the Doomsday problem.
 
-### Assumptions
-According to our own rationale, we must reason as if we are a random sample from the interval. A fine statement on its own, but I'm straining credulity if I ask you to reason before you've observed you can reason. No person reading has yet to make an observation. So we must determine how one, from behind a Rawlsian veil of ignorance—a magical place where one can reason without belonging to the human reference class—would bet. So long as you believe there is some world to speak of, you must entertain the idea that you could be "Adam" (i.e. before observing, your world was size 0). Obviously, no negative population can exist, so our lower bound must be 0 even if it's difficult to imagine not observing from within a population. Fixing this term doesn't change much mathematically, so both $W_1$ and $W_2$  will remain free until later.
+### Modeling all possible worlds
+According to our own account of anthropic reasoning, we must reason as if we're a random sample from the interval. Since we've already observed our place on the interval, it may seem impossible to think in this way. Indeed, I'm willing to bet all of you reading this have observed you exist already. Our model will therefore represent the prior belief one *would* have in the size of our world before making any observations (Bayesians do this all the time). In other words, how one, from behind a Rawlsian veil of ignorance—a magical place where one can reason without belonging to the human reference class—would place their bets. From this place, we will make some a priori assumptions:
 
-Lastly, we will assume our true world size $W$ is uniformly distributed over all non-zero integers between $W_1$ and $W_2$; that is, we believe all possible worlds belonging to this interval are equally possible, which is the best a Bayesian can do without any evidence to the contrary. Although we might consider some worlds more likely than others, we think so given auxiliary evidence and update our prior accordingly. For example, worlds where $W_2$ is only slightly larger than our population now are downregulated by our confidence that the world won't end tomorrow. We also can't consider infinite worlds, since it's not possible to uniformly select from $[0,\infty$). This is because the infinitely many numbers from this distribution must have probabilities $P$ that sum to 1, so $P$ for each must equal 0 (not useful). With knowledge about the universe (expansion of space or some cosmic filter), we might conclude that humanity is finite anyway, at least because our accessible universe is finite and head death defeats infinite time. 
+1. So long as you believe there is some world to speak of, you must entertain the idea that you could be "Adam" (i.e. before observing, your world was size 0). Obviously, no negative population can exist, so our lower bound must be 0 even if it's difficult to imagine not observing from within a population.
 
+2. We can't consider infinite worlds, since it's not possible to uniformly select from a countably infinite set like whole numbers. All elements must have equal probabilities $P$ that sum to 1, and so $P$ for each must equal 0 (not useful to anyone). If you find this unsatisfying, the universe imposes limits of its own. Our growth is necessarily finite, at least because our accessible universe is finite and entropy defeats infinite time.
 
+3. We believe all possible worlds belonging to this interval are equally possible, which is the best a Bayesian can do without any evidence to the contrary. Although we might consider some worlds more likely than others, we think so given auxiliary evidence and update our prior accordingly. For example, a world only slightly larger than our population now is downregulated by our confidence that the world won't end tomorrow.  
 
-With these conditions in mind, the overall expected error $E(g)$ should be:
+Our world size, now lowercase $w$ , is **unknown**, though we've reasoned it belongs to the set of possible worlds $\{W_1=0, W_1+1, \cdots, W_2 \}$ where $W_2$ is some finite upper bound we can (and will) make estimates for. 
 
+To find the error curve for a world of unknown size $w$, we just need to find average error of all possible worlds:
 
 $$
-E(g) = \frac{1}{W_2 - W_1} \left( \int_{W_1}^{W_2} E_W(g\mid W=w) \, dw \right)
+E_{\forall}(g) = \frac{1}{W_2 - W_1} \left( \int_{W_1}^{W_2} E_W(g\mid W=w) \, dw \right)
 $$
 
+Parts of this should look familiar. We are integrating our original error function $E_W$ over the interval, and our variable $w$ gets to roleplay as $W$ in each possible world where it is known. Then we divide by the interval size to get our average (a.k.a. expected) error curve. Evaluating $E_W$'s discontinuity:
+
 $$
-E(g) = \frac{1}{W_2 - W_1}\left(\int_{W_1}^{g}\left(g - \frac{w}{2}\right) dw \;+\; \int_{g}^{W_2}\frac{g^2 - wg + \tfrac{1}{2} w^2}{w} dw\right).
+E_{\forall}(g) = \frac{1}{W_2 - W_1}\left(\int_{W_1}^{g}\left(g - \frac{w}{2}\right) dw \;+\; \int_{g}^{W_2}\frac{g^2 - wg + \tfrac{1}{2} w^2}{w} dw\right).
 $$
 
 <!-- As seen in our toy example, our expected error follows a different function when our $g>w$. Sure, we'll still never bet above our upper bound $W_2$, but every $g$ $> W_1$ risk being larger than their world. -->
 
-Where we're integrating over both parts of our piecewise function. Recall, however, that our interval of possible worlds is discrete:
+This implies some guesses are being made over the value of $w$. If it is unclear why, imagine instead that you're playing a game of darts blindfolded. The dartboard's size $w$ can vary randomly between a maximum and minimum size $W_2$ and $W_1$. You won't know the size of the board when you throw, but you do know that its leftmost edge is fixed at an origin (0), and so the center will be some $w/2$ away from that. You're trying to determine how many paces right should you step to minimize your distance to this bullseye. By moving any distance farther than the smallest possible dartboard diameter, you run the risk of overshooting entirely ($g>w$). This, in fact, is an functionally identical problem.
+
+Recall, however, that our interval of possible worlds is discrete; we must use a sum:
 
 $$
-E(g) = \frac{1}{W_2 - W_1 + 1} \sum_{w=W_1}^{W_2} E_W(g\mid W=w)
+E_{\forall}(g) = \frac{1}{W_2 - W_1 + 1} \sum_{w=W_1}^{W_2} E_W(g\mid W=w)
 $$
 Thus:
 
 $$
-E(g) = \frac{1}{W_2 - W_1 + 1}\left(\sum_{w=W_1}^{g-1}\left(g - \frac{w}{2}\right) \;+\; \sum_{w=g}^{W_2} \frac{w^2 - 2gw + 2g^2 + w}{2(w+1)}\right).
+E_{\forall}(g) = \frac{1}{W_2 - W_1 + 1}\left(\sum_{w=W_1}^{g-1}\left(g - \frac{w}{2}\right) \;+\; \sum_{w=g}^{W_2} \frac{w^2 - 2gw + 2g^2 + w}{2(w+1)}\right).
 $$
 
 
-This is going to be obnoxious. Although the discrete model is exact, its far too unwieldy for closed-form analysis. Fortunately, for large $W_2$, the discrete uniform distribution over $\{W_1, \ldots, W_2\}$ closely approximates a continuous uniform distribution on $[W_1, W_2]$. The sums can therefore become integrals with minimal loss of precision.
+This is going to be obnoxious. Although the discrete model is exact, its far too unwieldy for closed-form analysis. Fortunately, for large $W_2$, the discrete uniform distribution over $\{W_1, \ldots, W_2\}$ closely approximates a continuous uniform distribution on $[W_1, W_2]$. The sums can therefore return to integrals with negligible precision impact.
 
-1. The first integral is for worlds where $g > w$ (Integrate over $w$ from $W_1$ to $g$):
+1. The first integral is for worlds where $g > w$:
 $$
 \sum_{w=W_1}^{g-1} \left(g - \frac{w}{2}\right) \approx \int_{W_1}^{g} \left( g - \frac{w}{2} \right) dw = \left[ g w - \frac{w^2}{4} \right]_{W_1}^{g}
 $$
+<center>
 
+This is the total error from possible dartboards a guess $g$ would overshoot
+(possible board's diameter is shorter than how far you moved; integrate over $w$ from $W_1$ to $g$).
 
-2. The second is for worlds where $g \leq w$ (Integrate over $w$ from $g$ to $W_2$)
+</center>
+
+1. The second is for worlds where $g \leq w$:
 $$
 \sum_{w=g}^{W_2}\frac{w^2 - 2gw + 2g^2 + w}{2(w+1)} \approx \sum_{w=g}^{W_2}\frac{g^2 - wg + \tfrac{1}{2} w^2}{w} \approx \int_{g}^{W_2} \left( \frac{g^2 - w g + \frac{1}{2} w^2}{w} \right) dw
 $$
@@ -161,18 +176,24 @@ $$
 $$
 = g^2 \ln\left( \frac{W_2}{g} \right) - g(W_2 - g) + \frac{1}{4} (W_2^2 - g^2)
 $$
+<center>
+
+This is the total error from possible dartboards a guess $g$ would hit.
+Integrate over $w$ from $g$ to $W_2$.
+
+</center>
+
 
 After integrating and simplifying, we arrive at:
 
+$$
+E_{\forall}(g) = \frac{1}{W_2 - W_1} \left[ \frac{3}{2} g^2 - g(W_1 + W_2) + \frac{1}{4} (W_1^2 + W_2^2) + g^2 \ln\left( \frac{W_2}{g} \right) \right]
+$$
+
+To find the optimal (minimum) error guess $g^\star = \underset{g}{\text{argmin }} E_{\forall}(g)$, we'll need to find when $E_{\forall}(g)$'s derivative(s) are zero:
 
 $$
-E(g) = \frac{1}{W_2 - W_1} \left[ \frac{3}{2} g^2 - g(W_1 + W_2) + \frac{1}{4} (W_1^2 + W_2^2) + g^2 \ln\left( \frac{W_2}{g} \right) \right]
-$$
-
-To find the optimal (minimum) error guess $g^\star = \underset{g}{\text{argmin }} E(g)$, we'll need to find when $E(g)$'s derivative(s) = 0:
-
-$$
-g^\star = \frac{dE}{dg} = \frac{1}{W_2 - W_1} \left[ 2g (1 + \ln\left( \frac{W_2}{g} \right)) - (W_1 + W_2) \right] = 0
+g^\star = \frac{dE}{dg} ⠀\rarr⠀ \frac{1}{W_2 - W_1} \left[ 2g (1 + \ln\left( \frac{W_2}{g} \right)) - (W_1 + W_2) \right] = 0
 $$
 
 $$
@@ -239,8 +260,7 @@ A possible criticism of my approach is that it seems to give possible worlds too
 
 While the model appears to be biased towards smaller worlds, unlike SIA, it doesn't claim any world to be more likely than another. That is, there is no attack from the Presumptuous Philosopher. If we're still concerned, we can reformulate our method to allow for possible worlds to "double dip"—that is, an observation of 7 could belong to a world with $W_2 = 10$ and $W_2 = 100$. It is already clear this is inconsistent with the original Urn thought experiment: if I were to draw a 7 ball, I'm unsure whether it belonged to $W_{10}$ or $W_{100}$, but I *am* certain it belong to only one of them. That is, both urns have their own 7. It's also important that each possible world not share its interval with any other once our beliefs about them become non-uniform. If we believe $W_{100}$ to be much more likely than $W_{10}$, suddenly a 7 from $W_{100}$ $\neq$ the one from $W_{10}$.
 
-Though we may be assured our model fits the Doomsday argument better than $t_{future} \approx t_{past}$, where came our confidence that Doomsday argument best fits our world? If, as with the urns, doom-early and doom-late *must* both be thought of as materially existent worlds from which you could observe, it disagrees with our perception of reality.
-Conventionally, there exists one "real" world with definite but presently unknown properties. Revisiting Figure 1, it might appear at first to model this kind of reality. But it requires $W$ be known; we call it $W$ so as not to lose generality. Although we may place an upper bound on $W_2$, its value is truly unknown—my model captures this. It is simply the case that reasoning about our uncertainty in $W_2$ *looks* like a belief in materially real possible worlds. More should be said on this.
+Though we may be assured our model fits the Doomsday argument better than $t_{future} \approx t_{past}$, where came our confidence that Doomsday argument best fits our world? If, as with the urns, doom-early and doom-late *must* both be thought of as materially existent worlds from which you could observe, it disagrees with our perception of reality. Conventionally, there exists one "real" world with definite but presently unknown properties. Revisiting Figure 1, it might appear at first to model this kind of reality. But it requires $W$ be known; we call it $W$ so as not to lose generality. Although we may place an upper bound on $W_2$, its value is truly unknown—my model captures this. It is simply the case that reasoning about our uncertainty in $W_2$ *looks* like a belief in materially real possible worlds. More should be said on this.
 
 #### (In)significance of results?
 
