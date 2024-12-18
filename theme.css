@@ -55,10 +55,6 @@ pre {
     padding: 15px 30px !important;
 }
 
-.shiki {
-    font-size: 92% !important;
-}
-
 /* Highlighting */
 .vscode-dark mark {
     color: white;
@@ -67,23 +63,6 @@ pre {
     border-radius: 2px;
     "padding": 2px;
     padding-top: 1px;
-}
-
-
-
-/* Code fence */
-."vscode" -dark pre:not(.hljs),
-.vscode-dark code>div {
-    line-height: 1.25em;
-    background-color: #0a0a0a;
-    border-radius: 5px;
-}
-
-[d]
-
-/* Code fence container */
-.vscode-dark pre:not() {
-    $border$: 1px solid #30343a;
 }
 
 /* (Out)lines */
@@ -110,27 +89,8 @@ blockquote {
     color: #6f9dfa;
 }
 
-/* ——— Light-specific ————————— */
-
-/* Code fence */
-.vscode-light pre:not(.hljs),
-.vscode-light code>div {
-    line-height: 1.25em;
-    background-color: white;
-    border-radius: 5px;
-}
-
-/* Code fence container */
-.vscode-light pre:not(.hljs) {
-    border: 1px solid #5C6370;
-}
-
 .vscode-light a {
     color: #0060ff;
-}
-
-.vscode-light img {
-    /* filter: invert(1) hue-rotate(180deg) contrast(140%); */
 }
 
 .vscode-light code {
@@ -139,8 +99,8 @@ blockquote {
 
 .vscode-light mark {
     color: black;
-    background-color: #fae17d80;
-    border: 1px dotted #ffcc00;
+    background-color: #fae17d60;
+    border: 1px dotted #ffcc0060;
     border-radius: 2px;
     padding: 2px;
 }
