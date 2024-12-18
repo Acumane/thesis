@@ -1,6 +1,53 @@
-## Gott's Argument
+Bren Paul <span style="float: right;">`662023992` · paulb4@rpi.edu</span>
+# Postponing the Apocalypse
 
-Gott's "$\Delta t$ argument" is simply:
+
+
+Imagine you have two urns. Each contains a number of balls which are labeled sequentially. One urn contains ten balls (labeled 1-10), and the other contains a hundred (labeled 1-100). You don't know which urn is which, but you *are* allowed to reach in to one and randomly pick a ball. Imagine, too, that no amount of rummaging will inform you of the urn's quantity.
+
+You inspect your chosen ball and find it's labeled #7. So, which urn did you choose? The one with ten or one hundred balls? Well, you probably drew from the 10-ball urn, right? After all, there was a 1-in-10 chance of getting that 7 from that urn, versus a 1-in-100 chance from the 100-ball urn. 
+
+Formally, let $H_{10}$ and $H_{100}$ be our hypotheses for drawing from either urn, respectively, and let evidence $E$ be that we drew ball #7
+
+Bayes' theorem states: $P(H_{10}|E) = \dfrac{P(E|H_{10}) \times P(H_{10})}{P(E)}$
+
+Let's solve each part:
+$P(H_{10}) = P(H_{100}) = 0.5$. Before inspecting our ball, we're equally likely to have picked from either urn.
+
+$P(E|H_{10})$ = Probability of drawing ball #7 if in 10-ball urn = $\frac{1}{10}$
+
+$P(E|H_{100})$ = Probability of drawing ball #7 if in 100-ball urn = $\frac{1}{100}$
+
+$P(E) = P(E|H_{10}) \times P(H_{10}) + P(E|H_{100}) \times P(H_{100})$
+   = $(\frac{1}{10} \times 0.5) + (\frac{1}{100} \times 0.5)$
+   = $0.05 + 0.005 = 0.055$
+
+So $P(H_{10}|E) = \dfrac{\frac{1}{10} \times 0.5}{0.055} = \dfrac{0.05}{0.055} \approx0.909$, or about 91%
+
+Once we drew ball #7, we can believe with 91% certainty that we drew from the smaller, 10-ball urn. This happens to be consistent with our intuitions. 
+
+Let's go again. Imagine there are two possible futures for humanity: in one, we colonize the Milky Way and persist for billions of years across countless star systems, ultimately giving rise to some million trillion trillion lives—$10^{22}$. In the other scenario, humanity never leaves the Earth. Our descendants, counted, amount to no more than the total number of people who have already lived—around 120 billion ($10^{11}$). We'll call these the doom-late and doom-soon scenarios respectively.
+
+Like picking a ball, imagine that you could've been anyone along the interval that contains all past, future, and present members of humanity. These are the two urns: the doom-late urn contains $10^{22}$ lives and doom-soon contains $10^{11}$. Think of yourself as the numbered ball pulled from one of these, and the number imprinted on you is your birth rank (not birth date, we needn't consider the time between dates). For you, this is something like 120 billion. Now, which is more likely: that your birth rank happens to be somewhere around the midpoint our species, or that you belong to the first 0.0000001% of humans who will ever live? Our reasoning from the toy example also seems to favor the doom-soon scenario. And we've already picked our ball; we are the observation.
+
+This is the doomsday argument. Though we also consider every possible world between soon and late, the puzzle remains: observing our existence has suggested we're a good fraction of the way to our expiration date. Some population growth models place "doomsday" farther away, but all more or less give us only a few centuries.
+
+If you're at all suspect that we seem to have done humanity in with a bit of writing, you're in good company. Countless refutations have been made that cast ample doubt on this kind of reasoning, or at least its premises. Whereas past detractors have argued that the doomsday "time bomb" is more likely a dud, my analysis will also reveal our countdown display is a faulty one.
+
+### Anthropic reasoning
+To perform predictive miracles like the one above, all you have to do is understand Anthropic reasoning. Try this on for size: if time in this universe continues ticking for another googol ($10^{100}$) years, why do we find ourselves in the very first blink? Because you're the squishy rock-bound kind of observer with particular temperate and energetic needs that couldn't possibly arise in an aging universe snuffed out by entropy.
+
+You've just done three things:
+1. Considered an intervel on which you assumed to be distributed "ordinarily"
+   >"I should find myself somewhere along $[0, 10^{100}]$, probably near the mean"
+2. Observed you exist (anomalously)
+   >"Oh, I'm really really far from the mean"
+3. Discovered a selection effect that reveals your true interval
+   >"Organic life like me can only really arise around $[0,10^{12}]$. Relief."
+
+⠀
+[Selection effects](https://en.wikipedia.org/wiki/Selection_bias) are real, powerful, and all kinds of fun—though not the focus of this study. To attack the Doomsday argument, we must bring into question what is meant by "ordinary." Without evidence to the contrary, expecting an observation to be randomly sampled from the interval to which it belongs seems like the epistemically humble play. We needn't look further than the Copernican principle as evidence of the thought's popularity; it's a methodological razor long practiced alongside the scientific method asserting that our observations should cluster about the mean of whatever we're measuring. This kind of reasoning has sprung up independently through time under many names, though Gott is often credited to the following statistical argument as it pertains to Doomsday:
+
 1. Given we're measuring *only* between times $t_{begin}$ and $t_{end}$
 2. Barring anything special about $t_{now}$
 
@@ -54,6 +101,7 @@ Using Gott's logic, Bostrom suggests we assume:
 $t_{future} = (t_{end} - t_{now}) \approx t_{past} = (t_{now} - t_{begin})$
 
 Or in other words, we *pretend* that the series will continue for roughly as long as it's already lasted. Ignoring any boring wins caught by whatever tolerance we assign to the word "roughly" ($\pm$ 0.01%, 2.5%, etc.), we're almost always wrong and overshoot as often as we undershoot—50/50 odds. It's reasonable to question why being symmetrically wrong would be preferable to any other strategy. Bostrom doesn't appear to offer any stronger reasoning than an appeal to neutrality, and our concerns with Gott's original argument certainly give us no reason to prefer $w_2$.
+
 
 ## An alternative
 
@@ -114,7 +162,7 @@ $$
 Born out of our toy example, $E_W$ has successfully generalized our reasoning about error to a world of known size $W$. Let's move on to the Doomsday problem.
 
 ### Modeling all possible worlds
-According to our own account of anthropic reasoning, we must reason as if we're a random sample from the interval. Since we've already observed our place on the interval, it may seem impossible to think in this way. Indeed, I'm willing to bet all of you reading this have observed you exist already. ==Our model will therefore represent the prior belief one *would* have in the size of our world before making any observations== (Bayesians do this all the time). In other words, how one, from behind a Rawlsian veil of ignorance—a magical place where one can reason without belonging to the human reference class—would place their bets. From this place, we will make some a priori assumptions:
+According to our own account of anthropic reasoning, we must reason as if we're a random sample from the interval. Since we've already observed our place on the interval, it may seem impossible to think in this way. Indeed, I'm willing to bet all of you reading this have observed you exist already. ==Our model will therefore represent the prior belief one *would* have in the size of our world before making any observations== (Bayesians do this all the time). In other words, how one, from behind a Rawlsian veil of ignorance—a magical place where one can reason without belonging to the human reference class—would place their bets. From this place, we will make some *a priori* assumptions:
 
 1. So long as you believe there is some world to speak of, you must entertain the idea that you could be "Adam" (i.e. before observing, your world was size 0). Obviously, no negative population can exist, so our lower bound must be 0 even if it's difficult to imagine not observing from within a population.
 
@@ -262,11 +310,11 @@ Though we may be assured our model fits the Doomsday argument better than $t_{fu
 
 ### (In)significance of results?
 
-$i.$⠀Doomsday only delayed
-Under the UN's population growth model, traditional anthropic reasoning gives us 100 years to our ~400. Postponing the apocalypse 3 times over calls for celebration, but this change is not as substantial as techno-optimists might hope. Bostrom estimates that humanity might eventually reach $10^{18}$ to $10^{20}$ stars, which could sustain a total $10^{35}$ biological human beings and vastly more digital ones. Indeed, for the optimist to be satisfied, we would need to be among the first 0.0000000000000000000001% of humans to live!
+$i.$⠀Doomsday, delayed
+Under the UN's population growth model, traditional anthropic reasoning gives us 100 years to our ~400. Postponing the apocalypse 3 times over calls for celebration, but this change is not as substantial as techno-optimists might hope. Bostrom estimates that humanity might eventually reach $10^{18}$ to $10^{20}$ stars, which could sustain a total $10^{35}$ biological human beings and vastly more digital ones. Indeed, for the optimist to be satisfied, we would need to be among the first 0.0000000000000000000001% of humans to ever live.
 
-$ii.$⠀Not much better with evidence
+$ii.$ (Not-so-)magic armchair theorizing
+Say we made it to 2500, believing doom was nigh according to our prophecy from the 21st century. As civilization waits with bated breath for the apocalypse, philosophers reconsult this literature and rejoice, for we actually have another 400 years to go. From this time onward, every year, this model will predict a doomsday in the near future that never draws nearer. Although our optimal error $0.17W_2$ is better than the $0.25W$ of a uniform distribution, it's not impressing anybody. Attempts to manage expectations were made on account of our model being nothing more than a prior probability; only so much can be said without knowing anything!
+
+$iii.$⠀Uncertainty, even *a posteriori*
 If we merely last as long as the typical mammalian species, we still have over 200,000 years to go (Barnosky et al. 2011). Then again, no other earthly species—mammalian or otherwise—has simultaneously explored the power of nuclear fusion for great good and existential harm. As you can imagine, there is little certainty about the future even once we account for evidence. Toby Ord accounts for both known and unknowable risk in his odds of “existential catastrophe” this century, which he places at 16%: one in six. And though the UN has its estimates for population growth, they do not (and cannot) account for technological black swan events like AGI, whole brain emulation, or life extension. "Humanity" might drag on due to an immortal few who rarely or never reproduce. Exotic observers like augmented humans, digitized minds, or artificial superintelligence may not even belong to the "human" reference class, and thus our evolution into higher forms may be read as our end.
-
-$iii.$⠀Reasoning without evidence
-Say we made it to 2500, believing doom was nigh according to our prophecy from the 21st century. As civilization waits with bated breath for the apocalypse, philosophers reconsult this literature and rejoice, for we actually have another 400 years to go. From this time onward, every year, this model will predict a doomsday in the near future that never draws nearer. This is perhaps the most important caveat; anthropic reasoning is the kind of reasoning we employ with no/little evidence.
